@@ -2,6 +2,8 @@
 
     class StorageItems  {
 
+        //  at the time of createing new object all the value inside the class mapped with  class
+     
          storage;
          constructor()
         {
