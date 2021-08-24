@@ -1,0 +1,7 @@
+ export const AGREED_REQUIRMENT = "AGREED_REQUIRMENT";
+
+ export const CUSTOMER = "CUSTOMER";
+ export const RESOURCING_MANAGER = "RESOURCING_MANAGER";
+ export const SOURCING_VENDOR = "SOURCING_VENDOR";
+
+  
