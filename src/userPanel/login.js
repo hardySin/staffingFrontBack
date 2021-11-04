@@ -173,7 +173,7 @@ export default function Login() {
            console.log("response",response)
            Storage.setItem(RoleConstant.TOKEN,data.token)
              setPassState(false)
-             return history.push("/admin");
+              return history.push("/admin");
 
               }
           catch(err)

@@ -99,19 +99,7 @@ export default function RequirementForm(props) {
 	{
 
     socket.emit("requirements",{ field:field ,selectedDate:selectedDate,userId:Storage.getItem("USER_ID")})
-        //   try
-        // {
-        //  const requestOptions = {
-        //    method: 'POST',
-        //    headers: { 'Content-Type': 'application/json' },
-    		// 	  body: JSON.stringify({ field:field ,selectedDate:selectedDate,userId:Storage.getItem("USER_ID")})
-        //  };
-        //  const response = await fetch('http://localhost:4000/api/createRequirement', requestOptions);
-        //  const data = await response.json();
-        //    }
-        // catch(err)
-        // {
-        //   }
+      
        }
  
     const getCustommers=async()=>

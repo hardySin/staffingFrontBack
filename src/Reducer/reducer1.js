@@ -1,12 +1,13 @@
   
-import {AGREED_REQUIRMENT ,RESOURCING_MANAGER, CUSTOMER ,SOURCING_VENDOR} from "./contants";
+import {AGREED_REQUIRMENT ,RESOURCING_MANAGER, CUSTOMER ,SOURCING_VENDOR, REQUIREMENT} from "./contants";
 
 const initialState = {
           
           agreeRequirement:[],
           customer:[],
           resourceManager:[],
-          sourcingVendors:[]
+          sourcingVendors:[],
+          requirement:{}
 
  };
 
@@ -53,6 +54,14 @@ function reducer1(state = initialState, action) {
             ...state,
             sourcingVendors:[...state.sourcingVendors, result3]
            }
+
+           case REQUIREMENT :
+            const result4=action.payload;
+             return { 
+              ...state,
+              requirement:{result4}
+             }
+  
             
           default:
             return state

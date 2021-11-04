@@ -35,21 +35,28 @@ const useStyles = makeStyles((theme) => ({
  
 export default function Requirement(props) {
   const classes = useStyles();
-  console.log("sdasdsdsadsa",props.item)
+  console.log("props",props.item)
   
   const [sourcingVendor ,setSourcingVendor]= useState([])
   const [field ,setField]= useState(false)
+  const [selectedVendor ,setselectedVendor]= useState([])
 
   const dispatch=useDispatch();
 
   const vendors=useSelector((state)=>state.reducer1.sourcingVendors);
+  console.log("vendors",vendors)
 
   const changeHandler = e => {
-		setField({...field, [e.target.name]: e.target.value})
-	}
+    
+    console.log('e.target.value ',e.target.value)
+    setselectedVendor([...selectedVendor, e.target.value])
+    console.log('selectedVendor ',selectedVendor)
+ 	}
 
-
-const getSourcingVendor=async()=>
+  const requirement=useSelector((state)=>state.reducer1.setRequirement);
+  console.log("requirement",requirement)
+  
+  const getSourcingVendor=async()=>
 {
  const requestOptions = {
           method: 'GET',
@@ -64,12 +71,11 @@ const response = await fetch('http://localhost:4000/api/getSourcingVendor', requ
    
    useEffect(()=>
 	{	
-    if(vendors.length>0)
+ 
+     if(vendors.length>0)
       {
         setSourcingVendor(vendors);
-        console.log("sourcingVendor", vendors)
-        }
-
+         }
        else
        {
         getSourcingVendor()
@@ -79,257 +85,257 @@ const response = await fetch('http://localhost:4000/api/getSourcingVendor', requ
 
    return (
     <>
+    {
+      (props.item!=undefined ? 
+        <Dialog
+        fullWidth="true"
+        maxWidth="md"
+         open={props.open9}
+          keepMounted
+            onClose={props.handleClose1}
+         aria-labelledby="alert-dialog-slide-title"
+         aria-describedby="alert-dialog-slide-description"
+       >
+         <DialogTitle id="alert-dialog-slide-title">New Requirement Rasied</DialogTitle>
+          <DialogContent>  
+           <DialogContentText id="alert-dialog-slide-description">
+       <Grid container spacing={3}>
+       <Grid item xs={6} sm={3}>
+       <Typography variant="h6" component="h6">
+       Customer Name
+          </Typography>
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+           {props.item.customer}
+            </Typography>
+           </Grid>
+
+          <Grid item xs={6} sm={3}>
+         <Typography variant="h6" component="h6">
+         Position Name
+          </Typography>
+ 
+         </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.positionName}
+ 
+         </Typography>
+ 
+          </Grid>
+         </Grid>
+      
+ 
+         <Grid container spacing={3}>
+       <Grid item xs={6} sm={3}>
+       <Typography variant="h6" component="h6">
+       Mandatory Skills
+         </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.mandatorySkills}
+ 
+         </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="h6" component="h6">
+         Desirable Skills
   
-    <Dialog
-       fullWidth="true"
-       maxWidth="md"
-        open={props.open9}
-         keepMounted
-           onClose={props.handleClose1}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">New Requirement Rasied</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-      <Grid container spacing={3}>
-      <Grid item xs={6} sm={3}>
-      <Typography variant="h6" component="h6">
-      Customer Name
-         </Typography>
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-            {props.item}
-         </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="h6" component="h6">
-        Position Name
-         </Typography>
-
-        </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        </Grid>
-     
-
-        <Grid container spacing={3}>
-      <Grid item xs={6} sm={3}>
-      <Typography variant="h6" component="h6">
-      Mandatory Skills
-        </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="h6" component="h6">
-        Desirable Skills
+          </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.desirableSkills}
  
          </Typography>
-
+ 
+          </Grid>
          </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        </Grid>
-
-
-        <Grid container spacing={3}>
-      <Grid item xs={6} sm={3}>
-      <Typography variant="h6" component="h6">
-      Quantity
-        </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="h6" component="h6">
-        Due Deployment Date
+ 
+ 
+         <Grid container spacing={3}>
+       <Grid item xs={6} sm={3}>
+       <Typography variant="h6" component="h6">
+       Quantity
          </Typography>
-
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.quantity}
+ 
+         </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="h6" component="h6">
+         Due Deployment Date
+          </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.dueDeploymentDate}
+ 
+         </Typography>
+ 
+          </Grid>
          </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
+ 
+ 
+         
+         <Grid container spacing={3}>
+       <Grid item xs={6} sm={3}>
+       <Typography variant="h6" component="h6">
+       Deployment Address
+          </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.deploymentAddress}
+ 
+         </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="h6" component="h6">
+         Postal Code
+            </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.postalCode}
+ 
+         </Typography>
+ 
+          </Grid>
          </Grid>
-        </Grid>
-
-
+ 
+ 
+         <Grid container spacing={3}>
+       <Grid item xs={6} sm={3}>
+       <Typography variant="h6" component="h6">
+       Job Description
+          </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.jobDescription}
+ 
+         </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="h6" component="h6">
+         Attached Job Description
+  
+          </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+             View
+         </Typography>
+ 
+          </Grid>
+         </Grid>
+ 
+       <Grid container spacing={3}>
+       <Grid item xs={6} sm={3}>
+       <Typography variant="h6" component="h6">
+       Requirement Received From
+           </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.customer}
+ 
+         </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="h6" component="h6">
+         Created On
+            </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.created_On}
+ 
+         </Typography>
+ 
+          </Grid>
+         </Grid> 
+  
+          <Grid container spacing={3}>
+       <Grid item xs={6} sm={3}>
+       <Typography variant="h6" component="h6">
+       Budget(In LPA)
+           </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.billing}
+ 
+         </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="h6" component="h6">
+         Experience(In Years)
+          </Typography>
+ 
+          </Grid>
+         <Grid item xs={6} sm={3}>
+         <Typography variant="span" component="span">
+         {props.item.experience}
+          </Typography>
+ 
+          </Grid>
+         </Grid> 
+ 
+  
+          <Grid container spacing={3}>
         
-        <Grid container spacing={3}>
-      <Grid item xs={6} sm={3}>
-      <Typography variant="h6" component="h6">
-      Deployment Address
-         </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="h6" component="h6">
-        Postal Code
-           </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        </Grid>
-
-
-        <Grid container spacing={3}>
-      <Grid item xs={6} sm={3}>
-      <Typography variant="h6" component="h6">
-      Job Description
-         </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="h6" component="h6">
-        Attached Job Description
+         <Grid item xs={6} sm={3}>
+  
+         <TextField fullWidth select label="Select Sourcing Vendor" 
+            variant="outlined" name="customer" onChange={changeHandler}>
+           {sourcingVendor.map((i) => (
+             <MenuItem key={i._id} value={i._id}>
+               {i.firstName +" "+ i.lastName}
+             </MenuItem>
+           ))}
+         </TextField>
  
-         </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-            View
-        </Typography>
-
-         </Grid>
-        </Grid>
- 
-        <Grid container spacing={3}>
-      <Grid item xs={6} sm={3}>
-      <Typography variant="h6" component="h6">
-      Requirement Received From
-          </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="h6" component="h6">
-        Created On
-           </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        </Grid>
- 
-        <Grid container spacing={3}>
-      <Grid item xs={6} sm={3}>
-      <Typography variant="h6" component="h6">
-      Budget(In LPA)
-          </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-
-        </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="h6" component="h6">
-        Experience(In Years)
-         </Typography>
-
-         </Grid>
-        <Grid item xs={6} sm={3}>
-        <Typography variant="span" component="span">
-        {props.item}
-         </Typography>
-
-         </Grid>
-        </Grid>
-
- 
-        <Grid container spacing={3}>
-      <Grid item xs={6} sm={3}>
           </Grid>
-        <Grid item xs={6} sm={3}>
-          </Grid>
-        <Grid item xs={6} sm={3}>
-          </Grid>
-        <Grid item xs={6} sm={3}>
+         </Grid>  
  
-        <TextField fullWidth select label="Select Sourcing Vendor" 
-           variant="outlined" name="customer" onChange={changeHandler}>
-          {sourcingVendor.map((i) => (
-            <MenuItem key={i._id} value={i._id}>
-              {i.firstName +" "+ i.lastName}
-            </MenuItem>
-          ))}
-        </TextField>
-
-         </Grid>
-        </Grid>
-
-             </DialogContentText>
-           <DialogActions>
-           <Button  className={classes.save} variant="contained" color="primary">
-               Select Sourcing Vendor
-             </Button>
-         </DialogActions>
-        </DialogContent>
- 
-      </Dialog>
- 
+              </DialogContentText>
+            <DialogActions>
+            <Button  className={classes.save} variant="contained" color="primary">
+                Select Sourcing Vendor
+              </Button>
+          </DialogActions>
+         </DialogContent>
+   
+       </Dialog>
+ :
+        "")
+    }
+  
+   
     </>
   );
 }

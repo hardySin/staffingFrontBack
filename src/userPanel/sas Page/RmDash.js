@@ -28,8 +28,9 @@ import Requirement from '../sas Page/Modals/requirement';
 import SocketHelper from '../helper/SocketHelper';
 import SocketContext from '../helper/socketProvider';
 import Storage from '../helper/Storage';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { store } from '../../Store/index';
+import { setRequirement } from '../../Reducer/action';
   
  const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -158,17 +159,14 @@ export default function RmDash(props) {
   // )
     
   const agreedRequirment=useSelector((state)=>state.reducer1.agreeRequirement);
- 
-  console.log("agreedRequirment ",agreedRequirment)
-  let sno=1;
+  const dispatch=useDispatch();
 
-
+   let sno=1;
     const requirements=(item)=>
     {
-              setPropsItem(item)      
-              console.log("propsItem",propsItem)
- 
-             setOpen9(true)
+                dispatch(setRequirement(item))
+                setPropsItem(item)
+              setOpen9(true)
     }
   useEffect(()=>
   {   
@@ -229,7 +227,7 @@ export default function RmDash(props) {
                   return(
                     <>
                  <TableRow key={item.modified_On}>
-                   <TableCell  > {sno}</TableCell>
+                   <TableCell  > {sno++}</TableCell>
                    <TableCell onClick={()=>requirements(item)} >{item.customer}</TableCell>
                    <TableCell > {item.positionName}</TableCell>
                   <TableCell  >{item.experience}</TableCell>
@@ -237,22 +235,18 @@ export default function RmDash(props) {
 
                    <TableCell >0</TableCell>
                    <TableCell onClick={()=>setOpen1(true)} ><div>0</div></TableCell>
-                   <TableCell onClick={()=>setOpen2(true)}>0</TableCell>
-                   <TableCell onClick={()=>setOpen3(true)}>0</TableCell>
-                   <TableCell onClick={()=>setOpen4(true)}>0</TableCell>
-                   <TableCell onClick={()=>setOpen5(true)}>0</TableCell>
-                   <TableCell onClick={()=>setOpen6(true)}>0</TableCell>
-                   <TableCell onClick={()=>setOpen7(true)}>0</TableCell>
-                   <TableCell onClick={()=>setOpen8(true)}>0</TableCell>
+                   <TableCell onClick={()=>setOpen2(true)}><div>0</div></TableCell>
+                   <TableCell onClick={()=>setOpen3(true)}><div>0</div></TableCell>
+                   <TableCell onClick={()=>setOpen4(true)}><div>0</div></TableCell>
+                   <TableCell onClick={()=>setOpen5(true)}><div>0</div></TableCell>
+                   <TableCell onClick={()=>setOpen6(true)}><div>0</div></TableCell>
+                   <TableCell onClick={()=>setOpen7(true)}><div>0</div></TableCell>
+                   <TableCell onClick={()=>setOpen8(true)}><div>0</div></TableCell>
 
-  
                 </TableRow> 
-                      
-                      
                     </>
                   )
-                  sno++;
-                 })}  
+                  })}  
                   
             </TableBody>
            

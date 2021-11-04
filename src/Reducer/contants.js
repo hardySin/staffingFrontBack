@@ -3,5 +3,6 @@
  export const CUSTOMER = "CUSTOMER";
  export const RESOURCING_MANAGER = "RESOURCING_MANAGER";
  export const SOURCING_VENDOR = "SOURCING_VENDOR";
+ export const REQUIREMENT = "REQUIREMENT";
 
   

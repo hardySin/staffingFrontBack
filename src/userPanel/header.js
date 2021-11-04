@@ -173,12 +173,16 @@ export default function Header() {
   };
 
   const [result, setResult] =useState([]);
-  let notificationCount=0;
-   let notificationViewCount=0;
+  const [notificationCount, setnotificationCount] =useState(0);
+
+ 
+    let notificationViewCount=0;
 
   const [item, setItem] =useState([]);
   //  const [agreeResult, setagreeResult] =useState([]);
   const agreeResult= useRef([])
+
+  const disagreeData= useRef([])
 
      const dispatch= useDispatch();
 
@@ -192,7 +196,7 @@ export default function Header() {
   };
   
   const handleClickOpen = async (item) => {
-      setOpen(true);
+       setOpen(true);
      setItem(item);
     };
 
@@ -202,47 +206,96 @@ export default function Header() {
   };
 
   const agree = async(item) => {
+    try
+   {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({userId:item._id})
+    };
+    const response = await fetch('http://localhost:4000/api/updateAgree', requestOptions);
+    const data = await response.json();
+   if(data!=undefined)
+    {      
+
+      const index= disagreeData.current[0].findIndex(items=>items._id=== item._id);
+         if(index!=-1)
+         {
+               disagreeData.current[0].splice(index,1);
+               setOpen(false);
+               dispatch(agreedRequirment(data.result))
+          }
+      }
+       }
+   catch(err)
+   {
+
+  }
+  };
+
+  const pushToDisagree=(val)=>
+  {
+    if(disagreeData.current instanceof Array && disagreeData.current.length>0)
+    {
+      disagreeData.current[0].push(val)
+    }
+    else
+    {
+      disagreeData.current.push(val)
+    }
+  }
+
+  const notificationData = async(item) => {
      try
     {
+       let userId=Storage.getItem("USER_ID");
+
      const requestOptions = {
        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({userId:item._id})
+       body: JSON.stringify({userId:userId})
      };
-     const response = await fetch('http://localhost:4000/api/updateAgree', requestOptions);
+     const response = await fetch('http://localhost:4000/api/disagreeData', requestOptions);
      const data = await response.json();
     if(data!=undefined)
      {      
-          console.log(data);
- 
-           const index= result.findIndex(items=>items._id=== item._id);
-          if(index!==-1)
-          {
-               console.log("splice", result.splice(index, 1)) ;
-               console.log("after splice result", result);
-               agreeResult.current.push(data.result);
-               console.log("agreeResult", agreeResult);
-                setOpen(false);
-                dispatch(agreedRequirment(data.result))
- 
-          }
-       }
- 
-       }
+           //  setResult(result => [...result, data.result]);
+           pushToDisagree(data.result)
+            setnotificationCount(disagreeData.current[0].length);
+         }
+        }
     catch(err)
     {
       }
+    };
 
+
+    const agreeData = async(item) => {
+      try
+     {
+        let userId=Storage.getItem("USER_ID");
  
-   };
-
-    // const agreedRequirment=useSelector((state)=>state.reducer1.agreedRequirment);
-  
-    // console.log("agreedRequirment ",agreedRequirment)
-
-   
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({userId:userId})
+      };
+      const response = await fetch('http://localhost:4000/api/agreeData', requestOptions);
+      const data = await response.json();
+     if(data!=undefined)
+      {      
+            //  setResult(result => [...result, data.result]);
+             for (const iterator of data.result) {
+               dispatch(agreedRequirment(iterator))
+            }
+        }
+         }
+     catch(err)
+     {
+       }
+     };
+ 
   const menuId = 'primary-search-account-menu';
-  
   const notificationId = 'primary-notification-menu';
   
 
@@ -272,8 +325,8 @@ export default function Header() {
       onClose={handleNotificationClose}
     >
           <List className={classes.root}>
-            {(result.length!==0)?
-              result.map((item)=>
+            {(disagreeData.current[0] instanceof Array && (disagreeData.current[0].length) !==0)?
+              disagreeData.current[0].map((item)=>
             {
                return(
               <>
@@ -378,17 +431,20 @@ export default function Header() {
  
    useEffect(()=>
 	{	
-     socket.on('connect', function() {
+ 
+    notificationData();
+    agreeData();
+    socket.on('connect', function() {
       console.log('Connected! ID: ' + socket.id);
       });
 
-      socket.on('reqNotification',(result1)=>
+       socket.on('reqNotification',(result1)=>
       {
-           setResult(result => [...result, result1.result]);
-           console.log("result.length ",result.length)
-           notificationCount=result.length;
-        });   
-  
+            pushToDisagree(result1.result)
+           setnotificationCount(disagreeData.current[0].length);
+      });   
+
+ 
      if(Storage.getItem(RoleConstant.TOKEN)!=null && Storage.getItem(RoleConstant.ROLENAME)!=undefined &&
     Storage.getItem(RoleConstant.ROLENAME)!=null && Storage.getItem(RoleConstant.ROLENAME)!="" )
     {
@@ -402,7 +458,7 @@ export default function Header() {
       {
         return history.push("/");
       }
-  
+   
   },[])
   return (
     <>
@@ -426,7 +482,7 @@ export default function Header() {
               aria-haspopup="true"
               onClick={handleNotificationMenuOpen}
 >
-              <Badge badgeContent={result.length-notificationViewCount} color="secondary">
+              <Badge badgeContent={notificationCount} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -483,15 +539,19 @@ export default function Header() {
            <Table stickyHeader  className={classes.table} aria-label="customized table">
              <TableHead>
                <TableRow>
-                 {columns.map((column) => (
-                   <StyledTableCell 
+                 {columns.map((column) => 
+                 {
+ 
+                    return(
+ 
+                    <StyledTableCell 
                      key={column.id}
                      align={column.align}
                      style={{ minWidth: column.minWidth }}
                    >
                      {column.label}
                    </StyledTableCell >
-                 ))}
+                 )})}
                </TableRow>
              </TableHead>
               

@@ -1,4 +1,4 @@
-import { AGREED_REQUIRMENT,CUSTOMER,RESOURCING_MANAGER,SOURCING_VENDOR } from "../Reducer/contants";
+import { AGREED_REQUIRMENT,CUSTOMER,REQUIREMENT,RESOURCING_MANAGER,SOURCING_VENDOR } from "../Reducer/contants";
 
  
   export  function agreedRequirment(payload) {
@@ -19,4 +19,9 @@ import { AGREED_REQUIRMENT,CUSTOMER,RESOURCING_MANAGER,SOURCING_VENDOR } from ".
   export  function setSourcingVendors(payload) {
      
     return { type: SOURCING_VENDOR, payload }
+  };
+
+  export  function setRequirement(payload) {
+     
+    return { type: REQUIREMENT, payload }
   };
